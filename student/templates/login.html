@@ -17,89 +17,110 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: #0d0d12;
+            background: #0a0a0f;
             position: relative;
             overflow: hidden;
         }
 
-        /* Vibrant animated gradient mesh background */
+        /* Smoother animated gradient mesh background */
         body::before {
             content: '';
             position: absolute;
             width: 100%;
             height: 100%;
             background: 
-                radial-gradient(circle at 15% 50%, rgba(255, 56, 129, 0.35) 0%, transparent 50%),
-                radial-gradient(circle at 85% 30%, rgba(0, 230, 188, 0.3) 0%, transparent 50%),
-                radial-gradient(circle at 50% 80%, rgba(255, 184, 0, 0.25) 0%, transparent 50%),
-                radial-gradient(circle at 40% 20%, rgba(88, 86, 214, 0.3) 0%, transparent 50%);
-            animation: meshMove 20s ease-in-out infinite;
+                radial-gradient(circle at 20% 50%, rgba(255, 56, 129, 0.4) 0%, transparent 50%),
+                radial-gradient(circle at 80% 30%, rgba(0, 230, 188, 0.35) 0%, transparent 50%),
+                radial-gradient(circle at 50% 85%, rgba(255, 184, 0, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 40% 15%, rgba(88, 86, 214, 0.35) 0%, transparent 50%);
+            animation: meshMove 25s ease-in-out infinite;
+            filter: blur(80px);
         }
 
         @keyframes meshMove {
             0%, 100% { 
                 transform: translate(0, 0) scale(1);
-                filter: hue-rotate(0deg);
+                opacity: 1;
             }
-            33% { 
-                transform: translate(50px, -40px) scale(1.15);
-                filter: hue-rotate(120deg);
+            25% { 
+                transform: translate(40px, -30px) scale(1.1);
+                opacity: 0.9;
             }
-            66% { 
-                transform: translate(-40px, 50px) scale(0.95);
-                filter: hue-rotate(240deg);
+            50% { 
+                transform: translate(-30px, 40px) scale(0.95);
+                opacity: 1;
+            }
+            75% { 
+                transform: translate(30px, 30px) scale(1.05);
+                opacity: 0.95;
             }
         }
 
         /* Glassmorphism container */
         .login-container {
             position: relative;
-            background: rgba(15, 15, 20, 0.75);
-            backdrop-filter: blur(50px) saturate(200%);
-            -webkit-backdrop-filter: blur(50px) saturate(200%);
-            border-radius: 36px;
+            background: rgba(18, 18, 24, 0.8);
+            backdrop-filter: blur(60px) saturate(180%);
+            -webkit-backdrop-filter: blur(60px) saturate(180%);
+            border-radius: 32px;
             padding: 56px 48px;
             width: 440px;
-            border: 1.5px solid rgba(255, 255, 255, 0.12);
+            border: 1.5px solid rgba(255, 255, 255, 0.15);
             box-shadow: 
-                0 12px 40px 0 rgba(0, 0, 0, 0.5),
-                inset 0 2px 0 0 rgba(255, 255, 255, 0.08);
-            animation: containerFloat 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+                0 20px 60px 0 rgba(0, 0, 0, 0.6),
+                inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
+            animation: containerFloat 1s cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: 10;
         }
 
         @keyframes containerFloat {
             from {
                 opacity: 0;
-                transform: translateY(40px) scale(0.9);
+                transform: translateY(30px) scale(0.95);
+                filter: blur(10px);
             }
             to {
                 opacity: 1;
                 transform: translateY(0) scale(1);
+                filter: blur(0);
             }
         }
 
-        /* Vibrant glow effect */
+        /* Improved glow effect */
         .login-container::before {
             content: '';
             position: absolute;
-            top: -3px;
-            left: -3px;
-            right: -3px;
-            bottom: -3px;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
             background: linear-gradient(135deg, 
-                rgba(255, 56, 129, 0.6), 
-                rgba(0, 230, 188, 0.6), 
-                rgba(255, 184, 0, 0.5),
-                rgba(88, 86, 214, 0.6));
-            border-radius: 36px;
+                rgba(255, 56, 129, 0.5), 
+                rgba(0, 230, 188, 0.5), 
+                rgba(255, 184, 0, 0.4),
+                rgba(88, 86, 214, 0.5));
+            border-radius: 32px;
             z-index: -1;
             opacity: 0;
-            transition: opacity 0.5s ease;
-            filter: blur(25px);
+            transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            filter: blur(20px);
+            animation: glowPulse 4s ease-in-out infinite;
+        }
+
+        @keyframes glowPulse {
+            0%, 100% {
+                filter: blur(20px);
+                opacity: 0;
+            }
+            50% {
+                filter: blur(25px);
+                opacity: 0.3;
+            }
         }
 
         .login-container:hover::before {
-            opacity: 0.7;
+            opacity: 0.6;
+            animation: glowPulse 2s ease-in-out infinite;
         }
 
         h2 {
@@ -113,24 +134,41 @@
             -webkit-text-fill-color: transparent;
             background-clip: text;
             background-size: 200% auto;
-            animation: gradientShift 3s linear infinite;
+            animation: gradientShift 4s ease-in-out infinite;
         }
 
         @keyframes gradientShift {
-            0% { background-position: 0% center; }
-            100% { background-position: 200% center; }
+            0%, 100% { background-position: 0% center; }
+            50% { background-position: 100% center; }
         }
 
         .subtitle {
-            color: rgba(255, 255, 255, 0.6);
+            color: rgba(255, 255, 255, 0.55);
             font-size: 15px;
             margin-bottom: 40px;
             font-weight: 400;
+            animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .input-group {
             position: relative;
             margin-bottom: 28px;
+            animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both;
+        }
+
+        .input-group:last-of-type {
+            animation-delay: 0.4s;
         }
 
         .input-group input {
@@ -138,31 +176,32 @@
             padding: 18px 24px;
             font-size: 15px;
             color: #ffffff;
-            background: rgba(255, 255, 255, 0.06);
-            border: 1.5px solid rgba(255, 255, 255, 0.12);
-            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1.5px solid rgba(255, 255, 255, 0.1);
+            border-radius: 14px;
             outline: none;
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .input-group input:focus {
-            background: rgba(255, 255, 255, 0.09);
-            border-color: rgba(0, 230, 188, 0.7);
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(0, 230, 188, 0.6);
             box-shadow: 
-                0 0 0 4px rgba(0, 230, 188, 0.15),
-                0 8px 24px rgba(0, 230, 188, 0.3);
+                0 0 0 3px rgba(0, 230, 188, 0.12),
+                0 8px 24px rgba(0, 230, 188, 0.25),
+                inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
             transform: translateY(-2px);
         }
 
         .input-group input::placeholder {
-            color: rgba(255, 255, 255, 0.3);
+            color: rgba(255, 255, 255, 0.25);
         }
 
         .input-group label {
             position: absolute;
             left: 24px;
             top: 18px;
-            color: rgba(255, 255, 255, 0.45);
+            color: rgba(255, 255, 255, 0.4);
             font-size: 15px;
             pointer-events: none;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -174,7 +213,7 @@
             top: -12px;
             left: 20px;
             font-size: 12px;
-            background: linear-gradient(to bottom, transparent 0%, rgba(15, 15, 20, 0.9) 30%, rgba(15, 15, 20, 0.9) 70%, transparent 100%);
+            background: linear-gradient(to bottom, transparent 0%, rgba(18, 18, 24, 0.95) 30%, rgba(18, 18, 24, 0.95) 70%, transparent 100%);
             padding: 0 8px;
             color: #00e6bc;
             font-weight: 600;
@@ -188,17 +227,18 @@
             color: #ffffff;
             background: linear-gradient(135deg, #ff3881 0%, #00e6bc 100%);
             border: none;
-            border-radius: 16px;
+            border-radius: 14px;
             cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             box-shadow: 
-                0 4px 24px rgba(255, 56, 129, 0.4),
-                0 4px 24px rgba(0, 230, 188, 0.3),
-                inset 0 2px 0 0 rgba(255, 255, 255, 0.25);
+                0 6px 24px rgba(255, 56, 129, 0.35),
+                0 6px 24px rgba(0, 230, 188, 0.25),
+                inset 0 1px 0 0 rgba(255, 255, 255, 0.2);
             position: relative;
             overflow: hidden;
             margin-top: 8px;
             background-size: 200% auto;
+            animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.5s both;
         }
 
         button[type="submit"]::before {
@@ -208,8 +248,8 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
-            transition: left 0.6s;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.7s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         button[type="submit"]:hover::before {
@@ -217,45 +257,50 @@
         }
 
         button[type="submit"]:hover {
-            transform: translateY(-3px);
+            transform: translateY(-3px) scale(1.01);
             box-shadow: 
-                0 8px 36px rgba(255, 56, 129, 0.6),
-                0 8px 36px rgba(0, 230, 188, 0.5),
-                inset 0 2px 0 0 rgba(255, 255, 255, 0.3);
+                0 12px 36px rgba(255, 56, 129, 0.5),
+                0 12px 36px rgba(0, 230, 188, 0.4),
+                inset 0 1px 0 0 rgba(255, 255, 255, 0.25);
             background-position: 100% center;
         }
 
         button[type="submit"]:active {
-            transform: translateY(-1px);
+            transform: translateY(-1px) scale(0.99);
+            transition: all 0.1s;
         }
 
         .forgot-password {
             text-align: center;
             margin-top: 24px;
+            animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.6s both;
         }
 
         .forgot-password a {
-            color: rgba(0, 230, 188, 0.95);
+            color: rgba(0, 230, 188, 0.9);
             text-decoration: none;
             font-size: 14px;
             font-weight: 500;
-            transition: all 0.3s;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
+            display: inline-block;
         }
 
         .forgot-password a::after {
             content: '';
             position: absolute;
             width: 0;
-            height: 1.5px;
-            bottom: -3px;
+            height: 2px;
+            bottom: -4px;
             left: 50%;
-            background: linear-gradient(90deg, transparent, #00e6bc, #ff3881, transparent);
-            transition: all 0.3s;
+            background: linear-gradient(90deg, #ff3881, #00e6bc, #ffb800);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 2px;
         }
 
         .forgot-password a:hover {
             color: #00ffcc;
+            transform: translateY(-1px);
         }
 
         .forgot-password a:hover::after {
@@ -263,78 +308,129 @@
             left: 0;
         }
 
-        /* Floating orbs with vibrant colors */
+        /* Smoother floating orbs */
         .orb {
             position: absolute;
             border-radius: 50%;
-            filter: blur(70px);
-            opacity: 0.5;
-            animation: orbFloat 10s ease-in-out infinite;
+            filter: blur(90px);
+            opacity: 0.4;
+            pointer-events: none;
+            z-index: 1;
         }
 
         .orb-1 {
-            width: 350px;
-            height: 350px;
-            background: radial-gradient(circle, rgba(255, 56, 129, 0.7), transparent);
-            top: -175px;
-            right: -175px;
-            animation-delay: 0s;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(255, 56, 129, 0.6), transparent);
+            top: -200px;
+            right: -200px;
+            animation: orbFloat1 12s ease-in-out infinite;
         }
 
         .orb-2 {
-            width: 300px;
-            height: 300px;
-            background: radial-gradient(circle, rgba(0, 230, 188, 0.6), transparent);
-            bottom: -150px;
-            left: -150px;
-            animation-delay: 3s;
+            width: 350px;
+            height: 350px;
+            background: radial-gradient(circle, rgba(0, 230, 188, 0.5), transparent);
+            bottom: -175px;
+            left: -175px;
+            animation: orbFloat2 15s ease-in-out infinite;
         }
 
         .orb-3 {
-            width: 280px;
-            height: 280px;
-            background: radial-gradient(circle, rgba(255, 184, 0, 0.5), transparent);
+            width: 320px;
+            height: 320px;
+            background: radial-gradient(circle, rgba(255, 184, 0, 0.45), transparent);
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            animation-delay: 6s;
+            animation: orbFloat3 18s ease-in-out infinite;
         }
 
-        @keyframes orbFloat {
+        @keyframes orbFloat1 {
             0%, 100% { 
                 transform: translate(0, 0) scale(1);
+                opacity: 0.4;
             }
-            50% { 
-                transform: translate(30px, -30px) scale(1.2);
+            33% { 
+                transform: translate(-40px, 40px) scale(1.15);
+                opacity: 0.5;
+            }
+            66% { 
+                transform: translate(30px, -30px) scale(0.9);
+                opacity: 0.35;
             }
         }
 
-        /* Decorative particles with vibrant colors */
+        @keyframes orbFloat2 {
+            0%, 100% { 
+                transform: translate(0, 0) scale(1);
+                opacity: 0.4;
+            }
+            33% { 
+                transform: translate(50px, -40px) scale(1.2);
+                opacity: 0.5;
+            }
+            66% { 
+                transform: translate(-40px, 30px) scale(0.85);
+                opacity: 0.35;
+            }
+        }
+
+        @keyframes orbFloat3 {
+            0%, 100% { 
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 0.35;
+            }
+            50% { 
+                transform: translate(-50%, -50%) scale(1.25);
+                opacity: 0.5;
+            }
+        }
+
+        /* Enhanced particles */
         .particle {
             position: absolute;
-            width: 4px;
-            height: 4px;
+            width: 3px;
+            height: 3px;
             border-radius: 50%;
-            animation: particleFloat 8s linear infinite;
+            box-shadow: 0 0 10px currentColor;
+            z-index: 5;
         }
 
         .particle:nth-child(1) { 
-            top: 15%; 
-            left: 10%; 
-            background: rgba(255, 56, 129, 0.8);
+            top: 20%; 
+            left: 15%; 
+            background: rgba(255, 56, 129, 0.9);
+            animation: particleFloat 10s linear infinite;
             animation-delay: 0s; 
         }
         .particle:nth-child(2) { 
-            top: 65%; 
-            left: 85%; 
-            background: rgba(0, 230, 188, 0.8);
-            animation-delay: 2.5s; 
+            top: 60%; 
+            left: 80%; 
+            background: rgba(0, 230, 188, 0.9);
+            animation: particleFloat 12s linear infinite;
+            animation-delay: 3s; 
         }
         .particle:nth-child(3) { 
-            top: 35%; 
-            left: 90%; 
-            background: rgba(255, 184, 0, 0.8);
-            animation-delay: 5s; 
+            top: 40%; 
+            left: 85%; 
+            background: rgba(255, 184, 0, 0.9);
+            animation: particleFloat 14s linear infinite;
+            animation-delay: 6s; 
+        }
+        .particle:nth-child(4) { 
+            top: 75%; 
+            left: 20%; 
+            background: rgba(88, 86, 214, 0.9);
+            animation: particleFloat 11s linear infinite;
+            animation-delay: 2s; 
+        }
+        .particle:nth-child(5) { 
+            top: 30%; 
+            left: 10%; 
+            background: rgba(255, 56, 129, 0.9);
+            animation: particleFloat 13s linear infinite;
+            animation-delay: 4s; 
         }
 
         @keyframes particleFloat {
@@ -349,16 +445,45 @@
                 opacity: 1;
             }
             100% { 
-                transform: translateY(-120px) translateX(30px) scale(0.5);
+                transform: translateY(-150px) translateX(40px) scale(0.3);
                 opacity: 0;
             }
+        }
+
+        /* Subtle shimmer effect on container */
+        @keyframes shimmer {
+            0% {
+                background-position: -1000px 0;
+            }
+            100% {
+                background-position: 1000px 0;
+            }
+        }
+
+        .login-container::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.03),
+                transparent
+            );
+            background-size: 1000px 100%;
+            animation: shimmer 8s infinite;
+            border-radius: 32px;
+            pointer-events: none;
         }
 
         @media (max-width: 480px) {
             .login-container {
                 width: 90%;
                 padding: 44px 32px;
-                border-radius: 32px;
+                border-radius: 28px;
             }
 
             h2 {
@@ -367,10 +492,17 @@
 
             .input-group input {
                 padding: 16px 20px;
+                font-size: 14px;
             }
 
             button[type="submit"] {
                 padding: 16px;
+                font-size: 15px;
+            }
+
+            .orb-1, .orb-2, .orb-3 {
+                width: 250px;
+                height: 250px;
             }
         }
     </style>
@@ -385,13 +517,14 @@
     <div class="particle"></div>
     <div class="particle"></div>
     <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
     
     <h2>Welcome Back</h2>
     <p class="subtitle">Please login to continue</p>
 
-    <form method="POST"  action="{% url 'login' %}">
+    <form method="POST" action="{% url 'login' %}">
         {% csrf_token %}
-
 
         <div class="input-group">
             <input type="text" name="username" placeholder=" " required>

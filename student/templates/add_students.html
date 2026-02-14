@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Form</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #0a0e27;
+      min-height: 100vh;
+      padding: 60px 20px;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* Animated Background */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: 
+        radial-gradient(circle at 20% 30%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+        radial-gradient(circle at 80% 70%, rgba(74, 222, 128, 0.2) 0%, transparent 50%),
+        radial-gradient(circle at 50% 50%, rgba(251, 146, 60, 0.15) 0%, transparent 50%);
+      animation: gradientShift 15s ease infinite;
+      z-index: 0;
+    }
+
+    @keyframes gradientShift {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.8; }
+    }
+
+    .form-container {
+      max-width: 1000px;
+      margin: 0 auto;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(20px);
+      padding: 60px;
+      border-radius: 32px;
+      box-shadow: 
+        0 30px 90px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+      z-index: 1;
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(40px) scale(0.95);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    /* Header Styling */
+    .form-header {
+      text-align: center;
+      margin-bottom: 50px;
+      position: relative;
+    }
+
+    .form-header h2 {
+      font-size: 42px;
+      font-weight: 800;
+      background: linear-gradient(135deg, #4ade80 0%, #3b82f6 50%, #8b5cf6 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 12px;
+      letter-spacing: -1px;
+    }
+
+    .form-header p {
+      color: #64748b;
+      font-size: 16px;
+      font-weight: 500;
+    }
+
+    .header-decoration {
+      width: 100px;
+      height: 5px;
+      background: linear-gradient(90deg, #4ade80, #3b82f6, #8b5cf6);
+      margin: 20px auto;
+      border-radius: 10px;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scaleX(1); opacity: 1; }
+      50% { transform: scaleX(1.1); opacity: 0.8; }
+    }
+
+    /* Form Grid Layout */
+    .form-row {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 28px;
+      margin-bottom: 28px;
+    }
+
+    .form-row.single {
+      grid-template-columns: 1fr;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    .form-group label {
+      margin-bottom: 12px;
+      font-weight: 700;
+      font-size: 14px;
+      color: #1e293b;
+      text-transform: capitalize;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .form-group label::before {
+      content: '';
+      width: 4px;
+      height: 16px;
+      background: linear-gradient(180deg, #4ade80, #3b82f6);
+      border-radius: 2px;
+    }
+
+    /* Input Styling */
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      padding: 16px 20px;
+      border-radius: 16px;
+      border: 2px solid #e2e8f0;
+      font-size: 15px;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      background: #f8fafc;
+      font-family: inherit;
+      font-weight: 500;
+      color: #0f172a;
+    }
+
+    .form-group input:hover,
+    .form-group select:hover,
+    .form-group textarea:hover {
+      border-color: #cbd5e1;
+      background: #ffffff;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: #3b82f6;
+      background: #ffffff;
+      box-shadow: 
+        0 0 0 4px rgba(59, 130, 246, 0.1),
+        0 8px 16px rgba(59, 130, 246, 0.1);
+      transform: translateY(-2px);
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 110px;
+      line-height: 1.6;
+    }
+
+    .form-group select {
+      cursor: pointer;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg width='14' height='9' viewBox='0 0 14 9' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L7 7L13 1' stroke='%233b82f6' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 20px center;
+      padding-right: 50px;
+    }
+
+    /* Placeholder Styling */
+    .form-group input::placeholder,
+    .form-group textarea::placeholder {
+      color: #94a3b8;
+    }
+
+    /* File Upload Styling */
+    .form-group input[type="file"] {
+      padding: 18px;
+      background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+      border: 2px dashed #cbd5e1;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 600;
+      color: #475569;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .form-group input[type="file"]::file-selector-button {
+      padding: 10px 20px;
+      margin-right: 16px;
+      background: linear-gradient(135deg, #3b82f6, #2563eb);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 13px;
+    }
+
+    .form-group input[type="file"]::file-selector-button:hover {
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      transform: scale(1.05);
+    }
+
+    .form-group input[type="file"]:hover {
+      border-color: #3b82f6;
+      background: linear-gradient(135deg, #dbeafe 0%, #e0e7ff 100%);
+    }
+
+    .form-group input[type="file"]:focus {
+      border-style: solid;
+      border-color: #3b82f6;
+    }
+
+    /* Section Headers */
+    .section-header {
+      margin: 50px 0 35px;
+      position: relative;
+    }
+
+    .section-header h3 {
+      font-size: 28px;
+      font-weight: 800;
+      background: linear-gradient(135deg, #0f172a 0%, #334155 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding-bottom: 16px;
+      border-bottom: 3px solid transparent;
+      border-image: linear-gradient(90deg, #4ade80, #3b82f6, #8b5cf6) 1;
+    }
+
+    .section-header h3::before {
+      content: '';
+      width: 8px;
+      height: 32px;
+      background: linear-gradient(180deg, #4ade80, #3b82f6);
+      border-radius: 4px;
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+    }
+
+    /* Document Upload Grid */
+    .docs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+      margin-bottom: 28px;
+    }
+
+    .doc-upload {
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Conditional Fields */
+    .conditional-field {
+      display: none;
+      animation: fadeInUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Submit Button */
+    .btn-submit {
+      width: 100%;
+      padding: 20px;
+      margin-top: 40px;
+      background: linear-gradient(135deg, #4ade80 0%, #3b82f6 50%, #8b5cf6 100%);
+      background-size: 200% 200%;
+      border: none;
+      color: white;
+      font-size: 18px;
+      font-weight: 800;
+      border-radius: 16px;
+      cursor: pointer;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 
+        0 8px 24px rgba(59, 130, 246, 0.4),
+        0 2px 8px rgba(0, 0, 0, 0.1);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-submit::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+      transition: left 0.5s ease;
+    }
+
+    .btn-submit:hover {
+      transform: translateY(-3px);
+      box-shadow: 
+        0 12px 32px rgba(59, 130, 246, 0.5),
+        0 4px 12px rgba(0, 0, 0, 0.15);
+      background-position: 100% 0;
+    }
+
+    .btn-submit:hover::before {
+      left: 100%;
+    }
+
+    .btn-submit:active {
+      transform: translateY(-1px);
+    }
+
+    /* Info Badge */
+    .info-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 5px 12px;
+      background: linear-gradient(135deg, #dbeafe, #e0e7ff);
+      color: #1e40af;
+      border-radius: 8px;
+      font-size: 11px;
+      font-weight: 700;
+      margin-left: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border: 1px solid rgba(59, 130, 246, 0.2);
+    }
+
+    /* Required Indicator */
+    .form-group label::after {
+      content: ' *';
+      color: #ef4444;
+      font-weight: 800;
+      font-size: 16px;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      body {
+        padding: 30px 15px;
+      }
+
+      .form-container {
+        padding: 40px 30px;
+        border-radius: 24px;
+      }
+
+      .form-header h2 {
+        font-size: 32px;
+      }
+
+      .form-row {
+        grid-template-columns: 1fr;
+        gap: 24px;
+      }
+
+      .docs-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .section-header h3 {
+        font-size: 24px;
+      }
+
+      .btn-submit {
+        font-size: 16px;
+        padding: 18px;
+      }
+    }
+
+    /* Glassmorphism Effect */
+    .glass-card {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 16px;
+      padding: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    /* Smooth Scrollbar */
+    ::-webkit-scrollbar {
+      width: 10px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #1e293b;
+      border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(180deg, #4ade80, #3b82f6);
+      border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: linear-gradient(180deg, #3b82f6, #8b5cf6);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="form-container">
+    <div class="form-header">
+      <h2>Student Registration Form</h2>
+      <div class="header-decoration"></div>
+      <p>Fill in the details below to complete your registration</p>
+    </div>
+
+    <form method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+
+      <!-- Personal Information -->
+      <div class="form-row">
+        <div class="form-group">
+          <label>First Name</label>
+          <input type="text" name="first_name" placeholder="Enter your first name" required>
+        </div>
+
+        <div class="form-group">
+          <label>Last Name</label>
+          <input type="text" name="last_name" placeholder="Enter your last name" required>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Gender</label>
+          <select name="gender" required>
+            <option value="">-- Select Gender --</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Age</label>
+          <input type="number" name="age" placeholder="Enter your age" min="5" max="100" required>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Date of Birth</label>
+          <input type="date" name="dob" required>
+        </div>
+
+        <div class="form-group">
+          <label>Mobile Number</label>
+          <input type="tel" name="mobile" placeholder="10-digit mobile number" pattern="[0-9]{10}" maxlength="10" required>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" name="email" placeholder="student@example.com" required>
+        </div>
+
+        <div class="form-group">
+          <label>Admission Date</label>
+          <input type="date" name="admission" required>
+        </div>
+      </div>
+
+      <!-- Address Information -->
+      <div class="form-row single">
+        <div class="form-group">
+          <label>Permanent Address</label>
+          <textarea name="permanent_address" rows="3" placeholder="House No., Street, Area, City, State - Pincode" required></textarea>
+        </div>
+      </div>
+
+      <div class="form-row single">
+        <div class="form-group">
+          <label>Temporary Address</label>
+          <textarea name="temporary_address" rows="3" placeholder="House No., Street, Area, City, State - Pincode" required></textarea>
+        </div>
+      </div>
+
+            <!-- Education Information Section -->
+      <div class="section-header">
+        <h3>Education Information</h3>
+      </div>
+
+      <div class="form-row single">
+        <div class="form-group">
+          <label>Standard</label>
+          <select name="standard" id="standard" required onchange="toggleDocs()">
+            <option value="">-- Select Standard --</option>
+            <option value="8">8th Standard</option>
+            <option value="9">9th Standard</option>
+            <option value="10">10th Standard</option>
+            <option value="11">11th Standard</option>
+            <option value="11n">11th + NEET</option>
+            <option value="12n">12th + NEET</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Document Upload Section -->
+      <div class="section-header">
+        <h3>Document Upload</h3>
+      </div>
+
+      <div class="docs-grid">
+        <div class="doc-upload">
+          <div class="form-group">
+            <label>Student Photo</label>
+            <input type="file" name="photo" accept="image/*" required>
+          </div>
+        </div>
+
+        <div class="doc-upload">
+          <div class="form-group">
+            <label>Student Signature</label>
+            <input type="file" name="signature" accept="image/*" required>
+          </div>
+        </div>
+
+        <div class="doc-upload">
+          <div class="form-group">
+            <label>Aadhar Card</label>
+            <input type="file" name="aadhar" accept="image/*,application/pdf" required>
+          </div>
+        </div>
+      </div>
+
+      <div class="docs-grid">
+        <div class="doc-upload conditional-field" id="marksheet10">
+          <div class="form-group">
+            <label>10th Marksheet <span class="info-badge">Required</span></label>
+            <input type="file" name="marksheet_10" accept="image/*,application/pdf">
+          </div>
+        </div>
+
+        <div class="doc-upload conditional-field" id="marksheet11">
+          <div class="form-group">
+            <label>11th Marksheet <span class="info-badge">Required</span></label>
+            <input type="file" name="marksheet_11" accept="image/*,application/pdf">
+          </div>
+        </div>
+      </div>
+
+      <!-- Fee Records Section -->
+      <div class="section-header">
+        <h3>Fee Records</h3>
+      </div>
+
+      <div class="form-row single">
+        <div class="form-group">
+          <label>Student Name (For Fee Records)</label>
+          <input type="text" name="student_name" placeholder="Enter student full name" required>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Total Fees Amount</label>
+          <input type="number" name="total_fees" id="total_fees" placeholder="Enter total fees amount" min="0" step="100" required>
+        </div>
+
+        <div class="form-group">
+          <label>Amount Paid</label>
+          <input type="number" name="amount_paid" id="amount_paid" placeholder="Enter amount paid" min="0" step="100" required oninput="calculatePending()">
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Pending Amount</label>
+          <input type="number" name="pending_amount" id="pending_amount" placeholder="Calculated automatically" readonly style="background: #e2e8f0; cursor: not-allowed;">
+        </div>
+
+        <div class="form-group">
+          <label>Payment Date</label>
+          <input type="date" name="payment_date" required>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Payment Status</label>
+          <select name="payment_status" required>
+            <option value="">-- Select Status --</option>
+            <option value="Paid">Paid</option>
+            <option value="Pending">Pending</option>
+            <option value="Partial">Partial Payment</option>
+            <option value="Overdue">Overdue</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Remarks</label>
+          <input type="text" name="remarks" placeholder="Enter any remarks" required>
+        </div>
+      </div>
+
+      <button type="submit" class="btn-submit">Submit Application</button>
+        <button type="submit" name="action" value="pdf" class="btn-submit"
+          style="background:linear-gradient(135deg,#f97316,#ef4444);">
+    Download PDF
+  </button>
+    </form>
+  </div>
+
+  <script>
+    function toggleDocs() {
+      let standard = document.getElementById("standard").value;
+      
+      const marksheet10 = document.getElementById("marksheet10");
+      const marksheet11 = document.getElementById("marksheet11");
+      
+      marksheet10.style.display = "none";
+      marksheet11.style.display = "none";
+
+      if (standard === "11" || standard === "11n") {
+        marksheet10.style.display = "block";
+        marksheet10.querySelector('input').setAttribute('required', 'required');
+      }
+
+      if (standard === "12n") {
+        marksheet10.style.display = "block";
+        marksheet11.style.display = "block";
+        marksheet10.querySelector('input').setAttribute('required', 'required');
+        marksheet11.querySelector('input').setAttribute('required', 'required');
+      }
+
+      if (standard !== "11" && standard !== "11n" && standard !== "12n") {
+        if (marksheet10.querySelector('input')) {
+          marksheet10.querySelector('input').removeAttribute('required');
+        }
+        if (marksheet11.querySelector('input')) {
+          marksheet11.querySelector('input').removeAttribute('required');
+        }
+      }
+    }
+
+    // Calculate Pending Amount
+    function calculatePending() {
+      const totalFees = parseFloat(document.getElementById('total_fees').value) || 0;
+      const amountPaid = parseFloat(document.getElementById('amount_paid').value) || 0;
+      const pendingAmount = totalFees - amountPaid;
+      document.getElementById('pending_amount').value = pendingAmount >= 0 ? pendingAmount : 0;
+    }
+
+    // Add event listener for total fees change
+    document.getElementById('total_fees').addEventListener('input', calculatePending);
+
+    // Add smooth animations on input interaction
+    document.querySelectorAll('input, select, textarea').forEach(element => {
+      element.addEventListener('focus', function() {
+        this.parentElement.style.transform = 'scale(1.01)';
+      });
+      
+      element.addEventListener('blur', function() {
+        this.parentElement.style.transform = 'scale(1)';
+      });
+    });
+  </script>
+</body>
+</html>

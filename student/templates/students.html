@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #f5f7fa;
+            min-height: 100vh;
+            display: flex;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            background: linear-gradient(180deg, #5b4cdb 0%, #4838b8 100%);
+            padding: 40px 0;
+            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            height: 100vh;
+            left: 0;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .sidebar-header {
+            padding: 0 30px 40px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+            margin-bottom: 30px;
+        }
+
+        .sidebar-header h2 {
+            color: white;
+            font-size: 26px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .nav-menu {
+            list-style: none;
+            padding: 0 20px;
+        }
+
+        .nav-item {
+            margin-bottom: 8px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 14px 20px;
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 500;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 4px;
+            height: 100%;
+            background: white;
+            transform: scaleY(0);
+            transition: transform 0.3s ease;
+        }
+
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            transform: translateX(5px);
+        }
+
+        .nav-link.active {
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            font-weight: 600;
+        }
+
+        .nav-link.active::before {
+            transform: scaleY(1);
+        }
+
+        .nav-icon {
+            width: 20px;
+            height: 20px;
+            margin-right: 12px;
+            opacity: 0.9;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 280px;
+            flex: 1;
+            padding: 40px 50px;
+            animation: fadeIn 0.6s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Students Header */
+        .students-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 35px;
+        }
+
+        .students-header h1 {
+            font-size: 36px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #5b4cdb 0%, #7c3aed 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Search Bar Container */
+        .search-add-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .search-box {
+            position: relative;
+            display: flex;
+            gap: 10px;
+            width: 450px;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 12px 45px 12px 45px;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 500;
+            color: #374151;
+            background: white;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        .search-input:focus {
+            border-color: #5b4cdb;
+            box-shadow: 0 0 0 4px rgba(91, 76, 219, 0.1);
+        }
+
+        .search-input::placeholder {
+            color: #9ca3af;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 20px;
+            color: #9ca3af;
+        }
+
+        .search-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 28px;
+            background: linear-gradient(135deg, #5b4cdb 0%, #7c3aed 100%);
+            color: #ffffff;
+            border: none;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(91, 76, 219, 0.3);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            white-space: nowrap;
+        }
+
+        .search-btn:hover {
+            background: linear-gradient(135deg, #4838b8 0%, #6d28d9 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(91, 76, 219, 0.4);
+        }
+
+        .clear-search {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 4px;
+            color: #9ca3af;
+            transition: color 0.2s ease;
+        }
+
+        .clear-search:hover {
+            color: #374151;
+        }
+
+        .clear-search svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        /* Add Button */
+        .add-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 32px;
+            background: linear-gradient(135deg, #0d6efd 0%, #0b5ed7 100%);
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(13, 110, 253, 0.3);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            white-space: nowrap;
+        }
+
+        .add-btn:hover {
+            background: linear-gradient(135deg, #0b5ed7 0%, #084298 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(13, 110, 253, 0.4);
+        }
+
+        /* Table Container */
+        .table-container {
+            background: #ffffff;
+            padding: 0;
+            border-radius: 16px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            margin: 0 auto;
+            max-width: 100%;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+            max-height: 650px;
+            overflow-y: auto;
+        }
+
+        /* Student Table */
+        .student-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            font-size: 14px;
+            min-width: 2000px;
+        }
+
+        .student-table thead {
+            background: linear-gradient(135deg, #5b4cdb, #7c3aed);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .student-table th {
+            padding: 18px 14px;
+            text-align: left;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            color: white;
+            white-space: nowrap;
+            border-bottom: 3px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .student-table td {
+            padding: 16px 14px;
+            text-align: left;
+            vertical-align: middle;
+            color: #1f2937;
+            line-height: 1.6;
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 13px;
+        }
+
+        /* Column Width Control */
+        .student-table th:nth-child(1),
+        .student-table td:nth-child(1) {
+            min-width: 110px;
+            width: 120px;
+        }
+
+        .student-table th:nth-child(2),
+        .student-table td:nth-child(2) {
+            min-width: 110px;
+            width: 120px;
+        }
+
+        .student-table th:nth-child(3),
+        .student-table td:nth-child(3) {
+            min-width: 50px;
+            width: 60px;
+            text-align: center;
+        }
+
+        .student-table th:nth-child(4),
+        .student-table td:nth-child(4) {
+            min-width: 100px;
+            width: 110px;
+        }
+
+        .student-table th:nth-child(5),
+        .student-table td:nth-child(5) {
+            min-width: 180px;
+            max-width: 220px;
+            word-break: break-word;
+        }
+
+        .student-table th:nth-child(6),
+        .student-table td:nth-child(6) {
+            min-width: 110px;
+            width: 120px;
+        }
+
+        .student-table th:nth-child(7),
+        .student-table td:nth-child(7) {
+            min-width: 110px;
+            width: 120px;
+        }
+
+        .student-table th:nth-child(8),
+        .student-table td:nth-child(8) {
+            min-width: 70px;
+            width: 80px;
+        }
+
+        .student-table th:nth-child(9),
+        .student-table td:nth-child(9) {
+            min-width: 200px;
+            max-width: 250px;
+            white-space: normal;
+            word-break: break-word;
+        }
+
+        .student-table th:nth-child(10),
+        .student-table td:nth-child(10) {
+            min-width: 200px;
+            max-width: 250px;
+            white-space: normal;
+            word-break: break-word;
+        }
+
+        .student-table th:nth-child(11),
+        .student-table td:nth-child(11) {
+            min-width: 90px;
+            width: 100px;
+            text-align: center;
+        }
+
+        .student-table th:nth-child(12),
+        .student-table td:nth-child(12) {
+            min-width: 100px;
+            width: 120px;
+            text-align: center;
+        }
+
+        .student-table th:nth-child(13),
+        .student-table td:nth-child(13) {
+            min-width: 80px;
+            width: 90px;
+            text-align: center;
+        }
+
+        .student-table th:nth-child(14),
+        .student-table td:nth-child(14) {
+            min-width: 90px;
+            width: 100px;
+            text-align: center;
+        }
+
+        .student-table th:nth-child(15),
+        .student-table td:nth-child(15) {
+            min-width: 80px;
+            width: 90px;
+            text-align: center;
+        }
+
+        .student-table th:nth-child(16),
+        .student-table td:nth-child(16) {
+            min-width: 100px;
+            width: 110px;
+            text-align: center;
+        }
+
+        /* Update Button */
+        .update-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            background-color: black;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+        }
+
+        .update-btn:hover {
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+        }
+
+        .update-btn svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        /* Image Styling */
+        .passport-img {
+            width: 50px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 6px;
+            border: 2px solid #e5e7eb;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s ease;
+        }
+
+        .passport-img:hover {
+            transform: scale(1.5);
+            z-index: 100;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .signature-img {
+            width: 80px;
+            height: 35px;
+            object-fit: contain;
+            border: 1px solid #e5e7eb;
+            background: #ffffff;
+            padding: 4px;
+            border-radius: 4px;
+            transition: transform 0.2s ease;
+        }
+
+        .signature-img:hover {
+            transform: scale(1.5);
+            z-index: 100;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Document Links */
+        .student-table a {
+            color: #3b82f6;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 4px 8px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            display: inline-block;
+        }
+
+        .student-table a:hover {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        /* NA Styling */
+        .student-table td span {
+            color: #9ca3af;
+            font-style: italic;
+        }
+
+        /* Zebra striping */
+        .student-table tbody tr:nth-child(even) {
+            background-color: #f9fafb;
+        }
+
+        /* Hover effect */
+        .student-table tbody tr {
+            transition: all 0.2s ease;
+        }
+
+        .student-table tbody tr:hover {
+            background-color: #eef2ff;
+            box-shadow: 0 2px 8px rgba(91, 76, 219, 0.08);
+        }
+
+        /* Better spacing for data */
+        .student-table td:first-child,
+        .student-table th:first-child {
+            padding-left: 20px;
+        }
+
+        .student-table td:last-child,
+        .student-table th:last-child {
+            padding-right: 20px;
+        }
+
+        /* Scrollbar styling */
+        .table-wrapper::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+        }
+
+        .table-wrapper::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 10px;
+        }
+
+        .table-wrapper::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #5b4cdb, #7c3aed);
+            border-radius: 10px;
+        }
+
+        .table-wrapper::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, #4838b8, #6d28d9);
+        }
+
+        /* No Results Message */
+        .no-results {
+            text-align: center;
+            padding: 60px 20px;
+            color: #6b7280;
+        }
+
+        .no-results svg {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 20px;
+            opacity: 0.3;
+        }
+
+        .no-results h3 {
+            font-size: 20px;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 8px;
+        }
+
+        .no-results p {
+            font-size: 15px;
+        }
+
+        /* Pagination Styles */
+        .pagination-container {
+            display: flex;
+            justify-content: left;
+            align-items: left;
+            padding: 30px 20px;
+            gap: 8px;
+            background: #ffffff;
+            border-top: 1px solid #e5e7eb;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .pagination-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 40px;
+            height: 40px;
+            padding: 0 12px;
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            color: #374151;
+            font-size: 14px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            margin-left:30px;
+        }
+
+        .pagination-btn:hover:not(.disabled):not(.active) {
+            background: #f3f4f6;
+            border-color: #d1d5db;
+            transform: translateY(-1px);
+        }
+
+        .pagination-btn.active {
+            background: linear-gradient(135deg, #5b4cdb, #7c3aed);
+            border-color: #5b4cdb;
+            color: white;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(91, 76, 219, 0.3);
+        }
+
+        .pagination-btn.disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .pagination-btn svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .pagination-ellipsis {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 40px;
+            height: 40px;
+            color: #9ca3af;
+            font-weight: 600;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .sidebar {
+                width: 240px;
+            }
+
+            .main-content {
+                margin-left: 240px;
+                padding: 30px 30px;
+            }
+
+            .students-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 20px;
+            }
+
+            .search-add-container {
+                width: 100%;
+                flex-direction: column;
+            }
+
+            .search-box {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 70px;
+                padding: 30px 0;
+            }
+
+            .sidebar-header h2,
+            .nav-link span {
+                display: none;
+            }
+
+            .nav-link {
+                justify-content: center;
+                padding: 14px;
+            }
+
+            .nav-icon {
+                margin-right: 0;
+            }
+
+            .main-content {
+                margin-left: 70px;
+                padding: 20px;
+            }
+
+            .students-header h1 {
+                font-size: 28px;
+            }
+
+            .pagination-container {
+                flex-wrap: wrap;
+                gap: 6px;
+                padding: 20px 15px;
+            }
+
+            .pagination-btn {
+                min-width: 36px;
+                height: 36px;
+                font-size: 13px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h2>Admin Panel</h2>
+        </div>
+        <nav>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="{% url 'dashboard' %}" class="nav-link">
+                        <svg class="nav-icon" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"/>
+                        </svg>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'students' %}" class="nav-link active">
+                        <svg class="nav-icon" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"/>
+                        </svg>
+                        <span>Students</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'feesrecord' %}" class="nav-link">
+                        <svg class="nav-icon" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4z"/>
+                            <path fill-rule="evenodd" d="M18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z" clip-rule="evenodd"/>
+                        </svg>
+                        <span>Fee Records</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'excel' %}" class="nav-link">
+                        <svg class="nav-icon" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M6 2a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2V7.414A2 2 0 0015.414 6L12 2.586A2 2 0 0010.586 2H6zm2 10a1 1 0 10-2 0v3a1 1 0 102 0v-3zm2-3a1 1 0 011 1v5a1 1 0 11-2 0v-5a1 1 0 011-1zm4-1a1 1 0 10-2 0v7a1 1 0 102 0V8z" clip-rule="evenodd"/>
+                        </svg>
+                        <span>Excel</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'logout' %}" class="nav-link">
+                        <svg class="nav-icon" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M3 3a1 1 0 011 1v12a1 1 0 11-2 0V4a1 1 0 011-1zm7.707 3.293a1 1 0 010 1.414L9.414 9H17a1 1 0 110 2H9.414l1.293 1.293a1 1 0 01-1.414 1.414l-3-3a1 1 0 010-1.414l3-3a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                        </svg>
+                        <span>Logout</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <!-- Heading + Search + Button -->
+        <div class="students-header">
+            <h1>Students Details</h1>
+            <div class="search-add-container">
+                <form method="GET" action="{% url 'students' %}" class="search-box">
+                    <div style="position: relative; flex: 1;">
+                        <svg class="search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                        </svg>
+                        <input 
+                            type="text" 
+                            name="search" 
+                            class="search-input" 
+                            placeholder="Search by name, email, mobile, standard..." 
+                            value="{{ search_query }}"
+                            autocomplete="off"
+                        >
+                        {% if search_query %}
+                        <button type="button" class="clear-search" onclick="window.location.href='{% url 'students' %}'">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                            </svg>
+                        </button>
+                        {% endif %}
+                    </div>
+                    <button type="submit" class="search-btn">
+                        <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                        </svg>
+                        Search
+                    </button>
+                </form>
+                <a href="{% url 'add_students' %}" class="add-btn">
+                    <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd"/>
+                    </svg>
+                    Add Student
+                </a>
+            </div>
+        </div>
+
+        <!-- TABLE -->
+        <div class="table-container">
+            {% if page_obj %}
+            <div class="table-wrapper">
+                <table class="student-table">
+                    <thead>
+                        <tr>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Age</th>
+                            <th>DOB</th>
+                            <th>Email</th>
+                            <th>Mobile</th>
+                            <th>Admission Date</th>
+                            <th>Gender</th>
+                            <th>Permanent Address</th>
+                            <th>Temporary Address</th>
+                            <th>Standard</th>
+                            <th>Documents</th>
+                            <th>Photo</th>
+                            <th>Signature</th>
+                            <th>Aadhaar</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for i in page_obj %}
+                        <tr>
+                            <td>{{ i.first_name }}</td>
+                            <td>{{ i.last_name }}</td>
+                            <td>{{ i.age }}</td>
+                            <td>{{ i.dob }}</td>
+                            <td>{{ i.email }}</td>
+                            <td>{{ i.mobile }}</td>
+                            <td>{{ i.admission }}</td>
+                            <td>{{ i.gender }}</td>
+                            <td>{{ i.permanent_address }}</td>
+                            <td>{{ i.temporary_address }}</td>
+                            <td>{{ i.standard }}</td>
+                            <td>
+                                {% if i.marksheet_10 %}
+                                    <a href="{{ i.marksheet_10.url }}" target="_blank">10th</a>
+                                {% endif %}
+                                {% if i.marksheet_11 %}
+                                    {% if i.marksheet_10 %} | {% endif %}
+                                    <a href="{{ i.marksheet_11.url }}" target="_blank">11th</a>
+                                {% endif %}
+                                {% if not i.marksheet_10 and not i.marksheet_11 %}
+                                    <span>NA</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if i.photo %}
+                                    <a href="{{ i.photo.url }}" target="_blank">
+                                        <img src="{{ i.photo.url }}" class="passport-img" alt="Photo">
+                                    </a>
+                                {% else %}
+                                    <span>NA</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if i.signature %}
+                                    <a href="{{ i.signature.url }}" target="_blank">
+                                        <img src="{{ i.signature.url }}" class="signature-img" alt="Signature">
+                                    </a>
+                                {% else %}
+                                    <span>NA</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if i.aadhar %}
+                                    <a href="{{ i.aadhar.url }}" target="_blank">View</a>
+                                {% else %}
+                                    <span>NA</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <a href="{% url 'update_student' i.id %}" class="update-btn">
+                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                                    </svg>
+                                    Update
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="no-results">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                </svg>
+                <h3>No Students Found</h3>
+                <p>{% if search_query %}No results found for "{{ search_query }}"{% else %}No students in the database{% endif %}</p>
+            </div>
+            {% endif %}
+
+            <!-- Pagination -->
+            {% if page_obj.has_other_pages %}
+            <div class="pagination-container">
+                <!-- Previous Button -->
+                {% if page_obj.has_previous %}
+                    <a href="?page={{ page_obj.previous_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}" class="pagination-btn">
+                        <svg fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                        </svg>
+                    </a>
+                {% else %}
+                    <span class="pagination-btn disabled">
+                        <svg fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                        </svg>
+                    </span>
+                {% endif %}
+
+                <!-- Page Numbers -->
+                {% for num in page_obj.paginator.page_range %}
+                    {% if page_obj.number == num %}
+                        <span class="pagination-btn active">{{ num }}</span>
+                    {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                        <a href="?page={{ num }}{% if search_query %}&search={{ search_query }}{% endif %}" class="pagination-btn">{{ num }}</a>
+                    {% endif %}
+                {% endfor %}
+
+                <!-- Next Button -->
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}" class="pagination-btn">
+                        <svg fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
+                        </svg>
+                    </a>
+                {% else %}
+                    <span class="pagination-btn disabled">
+                        <svg fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
+                        </svg>
+                    </span>
+                {% endif %}
+            </div>
+            {% endif %}
+        </div>
+    </main>
+</body>
+</html>
